@@ -216,7 +216,7 @@ int server_main_loop()
 	struct event timer_event, 
 	  			*xkcp_event = NULL;
 	struct event_base *base = NULL;
-	struct evconnlistener *mon_listener = NULL;
+	/*struct evconnlistener *mon_listener = NULL;*/
 	
 	base = event_base_new();
 	if (!base) {
@@ -228,7 +228,7 @@ int server_main_loop()
 	
 	int xkcp_fd = set_xkcp_listener();
 	
-	mon_listener = set_xkcp_mon_listener(base, mport, xkcp_hash);
+	/*mon_listener = set_xkcp_mon_listener(base, mport, xkcp_hash);*/
 	set_xkcp_server_flag(1); // set it's xkcp server
 	
 	xkcp_event = event_new(base, xkcp_fd, EV_READ|EV_PERSIST, xkcp_rcv_cb, base);
@@ -239,7 +239,7 @@ int server_main_loop()
 
 	event_base_dispatch(base);
 	
-	evconnlistener_free(mon_listener);
+	/*evconnlistener_free(mon_listener);*/
 	close(xkcp_fd);
 	event_base_free(base);
 	delete_hash(xkcp_hash, (void*)task_list_free, HASHPTR/*value*/, HASHSTRING/*key*/);

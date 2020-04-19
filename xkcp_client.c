@@ -117,7 +117,7 @@ static struct evconnlistener *set_tcp_proxy_listener(struct event_base *base, vo
 int client_main_loop(void)
 {
 	struct event_base *base = NULL;
-	struct evconnlistener *listener = NULL, *mlistener = NULL;
+	struct evconnlistener *listener = NULL;
 	int xkcp_fd = socket(AF_INET, SOCK_DGRAM, 0);
 	struct event timer_event, *xkcp_event;
 
@@ -153,7 +153,7 @@ int client_main_loop(void)
 	memcpy((char *)&proxy_param.sockaddr.sin_addr.s_addr, (char *)server->h_addr, server->h_length);
 	listener = set_tcp_proxy_listener(base, &proxy_param);
 
-	mlistener = set_xkcp_mon_listener(base, mport, &xkcp_task_list);
+	/*mlistener = set_xkcp_mon_listener(base, mport, &xkcp_task_list);*/
 
 	event_assign(&timer_event, base, -1, EV_PERSIST, timer_event_cb, &timer_event);
 	set_timer_interval(&timer_event);
@@ -162,7 +162,7 @@ int client_main_loop(void)
 	event_add(xkcp_event, NULL);
 
 	event_base_dispatch(base);
-	evconnlistener_free(mlistener);
+	/*evconnlistener_free(mlistener);*/
 	evconnlistener_free(listener);
 	close(xkcp_fd);
 	event_base_free(base);
